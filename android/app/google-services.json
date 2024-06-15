@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "876206047313",
+    "project_id": "mozz-task-e8715",
+    "storage_bucket": "mozz-task-e8715.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:876206047313:android:19bd8f384bdfd4fedbf870",
+        "android_client_info": {
+          "package_name": "com.example.mozz_task"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBAIahzLgVyLewev1FDqBoqWLOM57vgGsY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,3 +1,4 @@
+import 'package:flutter/rendering.dart';
 import 'package:flutter_svg/svg.dart';
 
 class MozzSvgPictureLoader {
@@ -13,11 +14,14 @@ class MozzSvgPictureLoader {
   }
 
   // Method to load an SVG asset
-  static SvgPicture loadAsset(String assetName, {double? width, double? height}) {
+  static SvgPicture loadAsset(String assetName,
+      {double? width, double? height, BoxFit? fit, Color? color}) {
     return SvgPicture.asset(
       assetName,
       width: width,
       height: height,
+      color: color,
+      fit: fit ?? BoxFit.contain,
     );
   }
 }
