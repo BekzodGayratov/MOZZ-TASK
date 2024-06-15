@@ -33,7 +33,7 @@ class MessageServiceImpl extends MessageService {
     try {
       final result = _firebaseFirestore
           .collection('messages')
-          // .where('sender_id', isEqualTo: senderId)
+          // .where('participants', arrayContains: senderId)
           // .where('receiver_id', isEqualTo: receiverId)
           .orderBy('created_at')
           .snapshots()
@@ -54,6 +54,7 @@ class MessageServiceImpl extends MessageService {
         'sender_id': message.sender_id,
         'receiver_id': message.receiver_id,
         'text': message.text,
+        'participants': [message.receiver_id, message.sender_id],
         'created_at': DateTime.now()
       });
 
