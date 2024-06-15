@@ -75,6 +75,7 @@ class _LoginPageViewState extends State<_LoginPageView> {
         if (state.status == LoginPageStatus.failure) {
           showMessage(context, state.failureMessage!);
         } else if (state.status == LoginPageStatus.success) {
+          
           Navigator.of(context).pushAndRemoveUntil(
               MaterialPageRoute(builder: (context) => const ChatListPage()),
               (route) => false);

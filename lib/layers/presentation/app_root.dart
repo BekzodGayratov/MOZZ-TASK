@@ -10,7 +10,9 @@ import 'package:mozz_task/layers/data/user_repository_iml.dart';
 import 'package:mozz_task/layers/domain/repository/message_repository.dart';
 import 'package:mozz_task/layers/domain/usecaces/auth/login.dart';
 import 'package:mozz_task/layers/domain/usecaces/auth/register.dart';
+import 'package:mozz_task/layers/domain/usecaces/message/edit_message.dart';
 import 'package:mozz_task/layers/domain/usecaces/message/get_messages.dart';
+import 'package:mozz_task/layers/domain/usecaces/message/send_message.dart';
 import 'package:mozz_task/layers/domain/usecaces/user/add_user_to_db.dart';
 import 'package:mozz_task/layers/domain/usecaces/user/get_users.dart';
 import 'package:mozz_task/layers/presentation/app_manager/app_manager_cubit.dart';
@@ -34,6 +36,8 @@ class _AppRootState extends State<AppRoot> {
   late final UserRepositoryImp _userRepo;
   late final MessageRepository _messageRepo;
   late final GetMessages _getMessages;
+  late final SendMessage _sendMessage;
+  late final EditMessage _editMessage;
 
   void initializeUseCases() {
     //--------------------------------------------------------------------------
@@ -41,11 +45,15 @@ class _AppRootState extends State<AppRoot> {
     //--------------------------------------------------------------------------
     final authService = AuthServiceImpl();
     _authRepo = AuthRepositoryImp(authService: authService);
-
+    //
     final userService = UserServiceImpl();
     _userRepo = UserRepositoryImp(userService: userService);
+
+    //
     final messageService = MessageServiceImpl();
     _messageRepo = MessageRepositoryImp(messageService: messageService);
+
+    //
 
     //--------------------------------------------------------------------------
     // Initialize Use Cases
@@ -55,6 +63,8 @@ class _AppRootState extends State<AppRoot> {
     _addUserToDB = AddUserToDB(repository: _userRepo);
     _getUsers = GetUsers(repository: _userRepo);
     _getMessages = GetMessages(repository: _messageRepo);
+    _sendMessage = SendMessage(repository: _messageRepo);
+    _editMessage = EditMessage(repository: _messageRepo);
   }
 
   @override
@@ -70,12 +80,13 @@ class _AppRootState extends State<AppRoot> {
       builder: (context, child) {
         return MultiRepositoryProvider(
           providers: [
-            RepositoryProvider<AuthRepositoryImp>.value(value: _authRepo),
-            RepositoryProvider<UserRepositoryImp>.value(value: _userRepo),
             RepositoryProvider<Login>.value(value: _login),
             RepositoryProvider<Register>.value(value: _register),
             RepositoryProvider<AddUserToDB>.value(value: _addUserToDB),
             RepositoryProvider<GetUsers>.value(value: _getUsers),
+            RepositoryProvider<GetMessages>.value(value: _getMessages),
+            RepositoryProvider<SendMessage>.value(value: _sendMessage),
+            RepositoryProvider<EditMessage>.value(value: _editMessage),
           ],
           child: BlocProvider(
             create: (context) => AppManagerCubit()..init(),

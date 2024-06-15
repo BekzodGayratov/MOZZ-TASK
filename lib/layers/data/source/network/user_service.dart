@@ -8,7 +8,7 @@ import 'package:mozz_task/layers/domain/entity/user.dart' as userEntity;
 
 abstract class UserService {
   Future<Either<String, String>> addUserToDB({required userEntity.User user});
-  Future<Either<String, List<UserDto>>> getUsers();
+  Future<Either<String, List<UserDto>>> getUsers({String? email});
 }
 
 class UserServiceImpl extends UserService {
@@ -29,7 +29,7 @@ class UserServiceImpl extends UserService {
   }
 
   @override
-  Future<Either<String, List<UserDto>>> getUsers() async {
+  Future<Either<String, List<UserDto>>> getUsers({String? email}) async {
     try {
       final result = await _firebaseFirestore
           .collection('users')

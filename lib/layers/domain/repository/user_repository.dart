@@ -4,5 +4,5 @@ import 'package:mozz_task/layers/domain/entity/user.dart';
 
 abstract class UserRepository {
   Future<Either<String, String>> addUserToDB({required User user});
-   Future<Either<String, List<UserDto>>> getUsers();
+   Future<Either<String, List<UserDto>>> getUsers({String? email});
 }

@@ -24,4 +24,17 @@ class ChatListPageCubit extends Cubit<ChatListPageState> {
         (r) =>
             emit(state.copyWith(status: ChatListPageStatus.success, users: r)));
   }
+
+  Future<void> searchUsers({required String email}) async {
+    if (state.status == ChatListPageStatus.success) {
+      if (email.isEmpty) {
+        getUsers();
+      } else {
+        emit(state.copyWith(
+            users: state.users
+                .where((element) => element.email!.contains(email))
+                .toList()));
+      }
+    }
+  }
 }

@@ -17,8 +17,8 @@ class UserRepositoryImp implements UserRepository {
   }
 
   @override
-  Future<Either<String, List<UserDto>>> getUsers() async {
-    final result = await _userService.getUsers();
+  Future<Either<String, List<UserDto>>> getUsers({String? email}) async {
+    final result = await _userService.getUsers(email: email);
     return result;
   }
 }

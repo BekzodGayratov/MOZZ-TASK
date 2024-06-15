@@ -1,36 +1,35 @@
-part of 'login_page_cubit.dart';
+part of 'send_message_cubit.dart';
 
-enum LoginPageStatus { initial, loading, success, failure }
+enum SendMessageStatus { initial, loading, success, failure }
 
-class LoginPageState extends Equatable {
-  const LoginPageState(
-      {this.status = LoginPageStatus.initial,
+class SendMessageState extends Equatable {
+  const SendMessageState(
+      {this.status = SendMessageStatus.initial,
       this.successMessage,
-      this.failureMessage});
+      this.failureMessage,
+      this.loading = false});
 
-  LoginPageState copyWith({
-    LoginPageStatus? status,
+  SendMessageState copyWith({
+    SendMessageStatus? status,
     String? successMessage,
     String? failureMessage,
-
   }) {
-    return LoginPageState(
+    return SendMessageState(
         status: status ?? this.status,
-
         failureMessage: failureMessage ?? this.failureMessage,
         successMessage: successMessage ?? this.successMessage);
   }
 
-  final LoginPageStatus status;
+  final SendMessageStatus status;
   final String? successMessage;
   final String? failureMessage;
-
+  final bool loading;
 
   @override
   List<Object?> get props => [
         status,
         successMessage,
         failureMessage,
-
+        loading,
       ];
 }

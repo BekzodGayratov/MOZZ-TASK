@@ -3,6 +3,10 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class MozzThemeData {
   static final _theme = ThemeData(
+
+    highlightColor: Colors.transparent,
+    hintColor: Colors.transparent,
+    splashColor: Colors.transparent,
 //--------------------------------------------------------------------------
 // APP BAR THEME
 //--------------------------------------------------------------------------

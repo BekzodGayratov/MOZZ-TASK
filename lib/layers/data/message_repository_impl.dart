@@ -10,19 +10,25 @@ class MessageRepositoryImp implements MessageRepository {
   MessageRepositoryImp({required MessageService messageService})
       : _messageService = messageService;
 
-
-
   @override
   Future<Either<String, String>> sendMessage({required Message message}) async {
     final result = await _messageService.sendMessage(message: message);
     return result;
   }
-  
-  @override
-  Either<String, Stream<List<MessageDto>>> getMessages({required String? senderId, required String? receiverId}) {
-   final result =  _messageService.getMessages(
-        senderId: senderId, receiverId: receiverId);
 
+  @override
+  Either<String, Stream<List<MessageDto>>> getMessages(
+      {required String? senderId, required String? receiverId}) {
+    final result =
+        _messageService.getMessages(senderId: senderId, receiverId: receiverId);
+
+    return result;
+  }
+
+  @override
+  Future<Either<String, String>> editMessage(
+      {required String? docId, required Message message}) {
+    final result = _messageService.editMessage(docId: docId, message: message);
     return result;
   }
 }

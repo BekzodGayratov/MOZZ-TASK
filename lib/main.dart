@@ -6,6 +6,6 @@ import 'package:mozz_task/layers/presentation/app_root.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
-
+  // await FirebaseAuth.instance.signOut();
   runApp(const AppRoot());
 }

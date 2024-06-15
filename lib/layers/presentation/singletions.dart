@@ -34,4 +34,6 @@ class UserData {
   static void initUserData() {
     user = _auth.currentUser!;
   }
+
+  static Future<void> signOut() => FirebaseAuth.instance.signOut();
 }

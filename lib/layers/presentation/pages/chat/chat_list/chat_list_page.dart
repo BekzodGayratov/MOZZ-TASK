@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
 import 'package:mozz_task/layers/domain/usecaces/user/get_users.dart';
 import 'package:mozz_task/layers/presentation/extensions.dart';
+import 'package:mozz_task/layers/presentation/helpers/debouncer.dart';
 import 'package:mozz_task/layers/presentation/helpers/navigator.dart';
 import 'package:mozz_task/layers/presentation/helpers/random_color.dart';
+import 'package:mozz_task/layers/presentation/pages/auth/login/view/login_page.dart';
 import 'package:mozz_task/layers/presentation/pages/chat/chat/chat_page.dart';
 import 'package:mozz_task/layers/presentation/pages/chat/chat_list/cubit/chat_list_page_cubit.dart';
 import 'package:mozz_task/layers/presentation/singletions.dart';
@@ -33,8 +36,32 @@ class ChatListPage extends StatelessWidget {
 // VIEW
 //------------------------------------------------------------------------------
 
-class _ChatListPageView extends StatelessWidget {
+class _ChatListPageView extends StatefulWidget {
   const _ChatListPageView();
+
+  @override
+  State<_ChatListPageView> createState() => _ChatListPageViewState();
+}
+
+class _ChatListPageViewState extends State<_ChatListPageView> {
+  late final FocusNode _searchFieldFocusedNode;
+  late final TextEditingController _searchFieldController;
+
+  final Debouncer _debouncer = Debouncer(milliseconds: 400);
+
+  @override
+  void initState() {
+    _searchFieldFocusedNode = FocusNode();
+    _searchFieldController = TextEditingController();
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    _searchFieldFocusedNode.dispose();
+    _searchFieldController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -48,16 +75,35 @@ class _ChatListPageView extends StatelessWidget {
               scrolledUnderElevation: 0.0,
               centerTitle: false,
               title: const Text('Чаты'),
+              actions: [
+                IconButton(
+                    onPressed: () => UserData.signOut().then((value) =>
+                        Navigator.of(context).pushAndRemoveUntil(
+                            MaterialPageRoute(
+                                builder: (context) => const LoginPage()),
+                            (route) => false)),
+                    icon: const Icon(
+                      Icons.logout,
+                      color: Colors.red,
+                    ))
+              ],
               bottom: PreferredSize(
                 preferredSize: const Size(double.infinity, kToolbarHeight),
                 child: StandartPadding(
                     child: TextFormField(
+                  controller: _searchFieldController,
+                  focusNode: _searchFieldFocusedNode,
                   decoration: InputDecoration(
                       hintText: 'Поиск',
                       prefixIcon: MozzSvgPictureLoader.loadAsset(
                           'search'.loadSvgFromName(),
                           color: theme.inputDecorationTheme.prefixIconColor,
                           fit: BoxFit.scaleDown)),
+                  onChanged: (v) {
+                    _debouncer.run(() {
+                      context.read<ChatListPageCubit>().searchUsers(email: v);
+                    });
+                  },
                 )),
               ),
             ),
@@ -69,7 +115,8 @@ class _ChatListPageView extends StatelessWidget {
                 return Center(child: Text(state.failureMessage.toString()));
               }
 
-              return const _ChatListPageContent();
+              return _ChatListPageContent(
+                  searchFieldFocusedNode: _searchFieldFocusedNode);
             }));
       },
     );
@@ -81,7 +128,8 @@ class _ChatListPageView extends StatelessWidget {
 //------------------------------------------------------------------------------
 
 class _ChatListPageContent extends StatelessWidget {
-  const _ChatListPageContent();
+  final FocusNode searchFieldFocusedNode;
+  const _ChatListPageContent({required this.searchFieldFocusedNode});
 
   @override
   Widget build(BuildContext context) {
@@ -102,15 +150,19 @@ class _ChatListPageContent extends StatelessWidget {
             children: [
               const Divider(),
               ListTile(
-                onTap: () => navigateToPage(context, const ChatPage()),
+                onTap: () {
+                  searchFieldFocusedNode.unfocus();
+                  navigateToPage(context, ChatPage(user: item));
+                },
                 leading: CircleAvatar(
                   radius: 34.r,
                   backgroundColor: getRandomColor(),
+                  child: Text(item.email![0].toUpperCase(),style: TextStyle(fontSize: 20.sp,color: Colors.white)),
                 ),
-                title: Text(item.email.toString()),
-                subtitle: const Text('Я готов'),
-                trailing:
-                    Text(DateFormat(DateFormat.WEEKDAY).format(DateTime.now())),
+                title: Text(item.email.toString()).animate().fade().scale(),
+                subtitle: const Text('Я готов').animate().fade().scale(),
+                trailing: Text(
+                    DateFormat(DateFormat.WEEKDAY).format(item.created_at!)),
               ),
             ],
           );

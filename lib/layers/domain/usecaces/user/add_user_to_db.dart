@@ -1,6 +1,5 @@
 import 'package:dartz/dartz.dart';
 import 'package:mozz_task/layers/domain/entity/user.dart';
-import 'package:mozz_task/layers/domain/repository/auth_repository.dart';
 import 'package:mozz_task/layers/domain/repository/user_repository.dart';
 
 class AddUserToDB {

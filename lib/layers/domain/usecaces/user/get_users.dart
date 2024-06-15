@@ -6,8 +6,9 @@ class GetUsers {
   GetUsers({required UserRepository repository}) : _repository = repository;
   final UserRepository _repository;
 
-  Future<Either<String, List<UserDto>>> call() async {
-    final result = await _repository.getUsers();
+  Future<Either<String, List<UserDto>>> call({String? email}) async {
+ 
+    final result = await _repository.getUsers(email: email);
 
     return result;
   }

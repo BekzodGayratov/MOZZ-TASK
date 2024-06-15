@@ -1,9 +1,9 @@
 // ignore_for_file: library_prefixes
 
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dartz/dartz.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:mozz_task/layers/domain/entity/user.dart' as userEntity;
+import 'package:mozz_task/layers/presentation/singletions.dart';
 
 abstract class AuthService {
   Future<Either<String, String>> login({required userEntity.User user});
@@ -19,6 +19,8 @@ class AuthServiceImpl extends AuthService {
     try {
       await _firebaseAuth.signInWithEmailAndPassword(
           email: user.email!, password: user.password!);
+
+      UserData.initUserData();
       return right('User successfully signed in');
     } on FirebaseException catch (e) {
       if (e.code == 'user-not-found') {
@@ -36,6 +38,8 @@ class AuthServiceImpl extends AuthService {
     try {
       await _firebaseAuth.createUserWithEmailAndPassword(
           email: user.email!, password: user.password!);
+
+      UserData.initUserData();
 
       return right('User successfully signed in');
     } on FirebaseException catch (e) {
