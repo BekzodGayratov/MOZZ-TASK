@@ -1,12 +1,12 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:mozz_task/layers/domain/entity/user.dart';
-import 'package:mozz_task/layers/domain/usecaces/login.dart';
+import 'package:mozz_task/layers/domain/usecaces/auth/login.dart';
 
-part 'cubit_state.dart';
+part 'login_page_state.dart';
 
-class CubitCubit extends Cubit<LoginPageState> {
-  CubitCubit({required Login login})
+class LoginPageCubit extends Cubit<LoginPageState> {
+  LoginPageCubit({required Login login})
       : _login = login,
         super(const LoginPageState());
 

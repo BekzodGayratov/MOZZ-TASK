@@ -3,4 +3,5 @@ import 'package:mozz_task/layers/domain/entity/user.dart';
 
 abstract class AuthRepository {
   Future<Either<String, String>> login({required User user});
+  Future<Either<String, String>> register({required User user});
 }

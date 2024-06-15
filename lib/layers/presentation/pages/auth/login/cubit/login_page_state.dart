@@ -1,4 +1,4 @@
-part of 'cubit_cubit.dart';
+part of 'login_page_cubit.dart';
 
 enum LoginPageStatus { initial, loading, success, failure }
 

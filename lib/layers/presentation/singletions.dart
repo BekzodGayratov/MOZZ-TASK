@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_svg/svg.dart';
 
@@ -23,5 +24,14 @@ class MozzSvgPictureLoader {
       color: color,
       fit: fit ?? BoxFit.contain,
     );
+  }
+}
+
+class UserData {
+  static late User user;
+  static final FirebaseAuth _auth = FirebaseAuth.instance;
+
+  static void initUserData() {
+    user = _auth.currentUser!;
   }
 }
